@@ -56,26 +56,27 @@ DLNode * insert(DLNode * head, int v)
 	newnode->data = v;
 	if (head == NULL) { // 空链表
 		newnode->prev = newnode->next = NULL;
-		return newnode; // 作为新的链表头
+		head = newnode; // 新的链表头
 	}
 	else if (head->data <= v) {
 		// 插入在表头
 		newnode->next = head;
 		newnode->prev = NULL;
 		head->prev = newnode;
-		return newnode;
+		head = newnode; // 新的链表头
 	} else {
 		DLNode * p = head;
 		while (p->next && p->next->data > v)
 			p = p->next; 
 		// 插入到p的后面
-		newnode->next = p->next;
 		newnode->prev = p;
-		p->next = newnode;
-		if( newnode->next ) 
+		newnode->next = p->next;
+		if( newnode->next )
 			newnode->next->prev = newnode;
-		return head;	
+		p->next = newnode;
 	}
+
+	return head;	
 }
 
 int search(int a[], int N, int key)
@@ -92,5 +93,18 @@ int search(int a[], int N, int key)
 			low = middle + 1;     /* upper half */
 	}
 	return -1; /* not found */
+}
+
+typedef struct {
+	float x; // real part
+	float y; // imaging part
+} Complex;
+
+Complex Add( Complex *a, Complex *b)
+{
+	Complex result;
+	result.x = a->x + b->x;
+	result.y = a->y + b->y;
+	return result;
 }
 
