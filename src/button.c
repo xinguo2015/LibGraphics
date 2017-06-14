@@ -49,6 +49,8 @@ void DrawBox(double x, double y, double width, double height, char label[])
 	}
 }
 
+double ButtonSinkMagnitude = 5;
+
 /* Êó±ê×´Ì¬ */
 double mousex = 0;
 double mousey = 0;
@@ -62,8 +64,8 @@ int button(double x, double y, double w, double h,char label[])
 		SetPenColor("Red");
 		if( buttondown ) {
 			strcpy(clickedItem, label);
-			sinkx = 5;
-			sinky = -5;
+			sinkx = ButtonSinkMagnitude;
+			sinky = -ButtonSinkMagnitude;
 		}
 	}
 	else
@@ -71,7 +73,7 @@ int button(double x, double y, double w, double h,char label[])
 
 	DrawBox(x+sinkx,y+sinky,w,h, label);
 
-	if( ! buttondown && strcmp(clickedItem,label)==0 )
+	if( ! buttondown && strcmp(clickedItem,label)==0  )
 		return 1; // must clicked this button before
 
 	return 0;
@@ -79,11 +81,24 @@ int button(double x, double y, double w, double h,char label[])
 
 void display()
 {
-	button(10,500, 50,20, "OK");
-	button(110,500, 50,20, "Cancel");
+	int x = 10, y = 500;
+	int w = 50, h = 20;
+	button(x,      y, w, h, "OK");
+	button(x+=100, y, w, h, "Cancel");
 
-	if( button(210,500, 50,20, "Quit") )
+	if( button(x+=100, y, w, h, "Quit") )
 		exit(-1);
+
+	button(x=10,  y-=50, w, h, "Click Me");
+	button(x+100, y,     w, h, "Click Me");
+	button(x+200, y,     w, h, "Click Me");
+	button(x,     y-=50, w, h, "Click Me");
+	button(x+100, y,     w, h, "Click Me");
+	button(x+200, y,     w, h, "Click Me");
+
+	if( button(60, y-=50, 100, h, "Click Me to Quit Demo") )
+		exit(-1);
+
 }
 
 void MouseEventProcess(int x, int y, int button, int event)
