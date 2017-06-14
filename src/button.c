@@ -30,6 +30,35 @@ void Main() /*仅初始化执行一次*/
 	display();
 }
 
+/* 鼠标状态 */
+double mousex = 0;
+double mousey = 0;
+int    buttondown = 0;
+char   clickedItem[128];
+
+void MouseEventProcess(int x, int y, int button, int event)
+{
+	/*擦除旧的*/
+     SetEraseMode(TRUE);
+	 display();
+
+	 mousex = ScaleXInches(x);/*pixels --> inches*/
+	 mousey = ScaleYInches(y);/*pixels --> inches*/
+
+	 switch (event) {
+	 case BUTTON_DOWN:
+		 buttondown = 1;
+		 break;
+	 case BUTTON_UP:
+		 buttondown = 0;
+		 break;
+	 }
+
+	 /*画上新的*/
+     SetEraseMode(FALSE);
+	 display();
+}
+
 bool inBox(double x0, double y0, double x1, double x2, double y1, double y2)
 {
 	return (x0 >= x1 && x0 <= x2 && y0 >= y1 && y0 <= y2);
@@ -49,29 +78,24 @@ void DrawBox(double x, double y, double width, double height, char label[])
 	}
 }
 
-double ButtonSinkMagnitude = 5;
-
-/* 鼠标状态 */
-double mousex = 0;
-double mousey = 0;
-int    buttondown = 0;
-char   clickedItem[128];
+static double SinkMagnitude = 5;
 
 int button(double x, double y, double w, double h,char label[])
 {
 	double sinkx = 0, sinky = 0;
+
 	if( inBox(mousex,mousey,x,x+w,y,y+h) ) {
 		SetPenColor("Red");
 		if( buttondown ) {
 			strcpy(clickedItem, label);
-			sinkx = ButtonSinkMagnitude;
-			sinky = -ButtonSinkMagnitude;
+			sinkx =   SinkMagnitude;
+			sinky = - SinkMagnitude;
 		}
 	}
 	else
 		SetPenColor("Blue");
 
-	DrawBox(x+sinkx,y+sinky,w,h, label);
+	DrawBox(x+sinkx, y+sinky, w, h, label);
 
 	if( ! buttondown && strcmp(clickedItem,label)==0  )
 		return 1; // must clicked this button before
@@ -99,27 +123,4 @@ void display()
 	if( button(60, y-=50, 100, h, "Click Me to Quit Demo") )
 		exit(-1);
 
-}
-
-void MouseEventProcess(int x, int y, int button, int event)
-{
-	/*擦除旧的*/
-     SetEraseMode(TRUE);
-	 display();
-
-	 mousex = ScaleXInches(x);/*pixels --> inches*/
-	 mousey = ScaleYInches(y);/*pixels --> inches*/
-
-	 switch (event) {
-	 case BUTTON_DOWN:
-		 buttondown = 1;
-		 break;
-	 case BUTTON_UP:
-		 buttondown = 0;
-		 break;
-	 }
-
-	 /*画上新的*/
-     SetEraseMode(FALSE);
-	 display();
 }
