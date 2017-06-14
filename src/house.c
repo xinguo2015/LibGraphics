@@ -63,6 +63,8 @@ void Main()
     InitGraphics();
     cx = GetWindowWidth() / 2;
     cy = GetWindowHeight() / 2;
+	SetPenColor("Red");
+	SetPenSize(2);
     DrawHouse(cx - HouseWidth / 2,
               cy - (HouseHeight + AtticHeight) / 2);
 }
