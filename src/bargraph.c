@@ -95,6 +95,9 @@ void Main() /*仅初始化执行一次*/
 	SetPenColor("Black"); /*设置画笔颜色*/
     SetPenSize(1);        /*设置画笔粗细*/
 
+	DrawBox(100,100,100,100);
+	return;
+
 	DrawGraph(100,100);
 }
 
