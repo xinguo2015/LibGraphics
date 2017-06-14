@@ -105,6 +105,7 @@ int button(double x, double y, double w, double h,char label[])
 
 void display()
 {
+	static int show_more = 0;
 	int x = 10, y = 500;
 	int w = 50, h = 20;
 	button(x,      y, w, h, "OK");
@@ -113,14 +114,20 @@ void display()
 	if( button(x+=100, y, w, h, "Quit") )
 		exit(-1);
 
-	button(x=10,  y-=50, w, h, "Click Me");
-	button(x+100, y,     w, h, "Click Me");
-	button(x+200, y,     w, h, "Click Me");
-	button(x,     y-=50, w, h, "Click Me");
-	button(x+100, y,     w, h, "Click Me");
-	button(x+200, y,     w, h, "Click Me");
+	if( button(x=40,  y-=50, 100, h, "Show More Buttons") )
+		show_more = 1;
+	if( button(x=150,  y, 100, h, "Show Less Buttons") )
+		show_more = 0;
 
-	if( button(60, y-=50, 100, h, "Click Me to Quit Demo") )
-		exit(-1);
+	if( show_more ) {
+		button(x=10,  y-=50, w, h, "Click Me");
+		button(x+100, y,     w, h, "Click Me");
+		button(x+200, y,     w, h, "Click Me");
+		button(x,     y-=50, w, h, "Click Me");
+		button(x+100, y,     w, h, "Click Me");
+		button(x+200, y,     w, h, "Click Me");
 
+		if( button(60, y-=50, 100, h, "Click Me to Quit Demo") )
+			exit(-1);
+	}
 }
